@@ -10,7 +10,30 @@
           "version": "1.0.0",
           "semanticVersion": "1.0.0",
           "informationUri": "https://www.glog.ai",
-          "rules": [],
+          "rules": [
+            {
+              "id": "2eb58e87-c3f4-3ced-96c6-f6503666acb3",
+              "name": "Detected Prohibited C Function",
+              "helpUri": "https://www.glog.ai/",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\n\"Detected Prohibited C Function\" vulnerability refers to the use of insecure C library functions that can lead to various security issues such as buffer overflow, format string vulnerabilities, integer overflow, etc. In this case, the `sprintf()` function is used, which is known to be insecure because it does not perform bounds checking on the destination buffer. This can lead to buffer overflow if the source string is larger than the destination buffer.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to use safer alternatives that perform bounds checking to prevent buffer overflow. In C++, the `std::string` and `std::stringstream` classes provide safer alternatives for string manipulation. Also, consider using functions like `snprintf()` which takes the size of the destination buffer as an argument and ensures that it does not write beyond the buffer.\n\n## Source Code Fix Recommendation\n\nReplace the `sprintf()` function with `snprintf()` function:\n\n```cpp\nchar findigIn[SIZE];\nconst char* byClass = \"some string\";\nsnprintf(findigIn, sizeof(findigIn), \"%s\", byClass);\n```\n\nIn this code, `snprintf()` will not write more than `SIZE` characters (including the null-terminator) to `findigIn`, preventing a buffer overflow.\n\n## Library Dependencies\n\nThe code example requires the following library:\n\n```cpp\n#include <cstdio>\n```\n\n## References\n\n- [OWASP C++ Secure Coding Practices](https://cheatsheetseries.owasp.org/cheatsheets/C-Based_Toolchain_Hardening_Cheat_Sheet.html)\n- [CWE-120: Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')](https://cwe.mitre.org/data/definitions/120.html)\n\nPlease note that the links provided are accessible to anonymous users at the time of writing this report."
+              },
+              "properties": {
+                "cwe": [
+                  {
+                    "id": "CWE-120",
+                    "url": "https://cwe.mitre.org/data/definitions/120.html"
+                  }
+                ],
+                "severity": "MEDIUM",
+                "kind": "FAIL",
+                "tags": [
+                  "CWE-120"
+                ]
+              }
+            }
+          ],
           "language": "en-US",
           "contents": [
             "localizedData",
@@ -20,7 +43,55 @@
         }
       },
       "language": "en-US",
-      "results": [],
+      "results": [
+        {
+          "ruleId": "2eb58e87-c3f4-3ced-96c6-f6503666acb3",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Detected Prohibited C Function"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "Main.cpp"
+                },
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 16,
+                  "endLine": 81,
+                  "endColumn": 23,
+                  "charOffset": 2283,
+                  "charLength": 7,
+                  "snippet": {
+                    "text": "sprintf",
+                    "rendered": {
+                      "text": "sprintf",
+                      "markdown": "`sprintf`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "glog-pfp-ruleFileLineCode/v1": "130df49481341705e6e907d8002df988ae134287207be0e26152f970bfd15055",
+            "glog-pfp-ruleFileCode/v1": "4ccb22c3d9ef6bfbc8e65144efaafc6dcb0d7d589227d9d5ea62a9934864d52e"
+          },
+          "fingerprints": {
+            "glog-fp-ruleFileCode/v1": "4ccb22c3d9ef6bfbc8e65144efaafc6dcb0d7d589227d9d5ea62a9934864d52e"
+          },
+          "properties": {
+            "DevSkimSeverity": "Moderate",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.BannedFunction"
+            ]
+          }
+        }
+      ],
       "newlineSequences": [
         "\r\n",
         "\n"
